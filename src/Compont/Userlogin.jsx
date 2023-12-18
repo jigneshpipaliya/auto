@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { Formik, Field, Form ,ErrorMessage } from 'formik';
-import {Link} from 'react-router-dom/cjs/react-router-dom'
+import {Link, useHistory} from 'react-router-dom/cjs/react-router-dom'
 import * as Yup from "yup"
+import axios from 'axios';
 
 const formSchema = Yup.object().shape({
   email: Yup.string().email()
@@ -13,14 +14,13 @@ const formSchema = Yup.object().shape({
 
 
 function Userlogin() {
-  const [data, setData] = useState([])
+  //const [data, setData] = useState([])
   const [initialValues, setInitialvalues] = useState(
     {
       email: '',
       password: '',
     })
-    console.log(data)
-   
+    const history = useHistory()
   return (
     <div>
        <Formik
@@ -28,12 +28,24 @@ function Userlogin() {
       enableReinitialize={true}
       validationSchema={formSchema}
       onSubmit={async (values, actions) => {
-        setData([...data, values])
+        axios.post('http://localhost:3001/users/login', values)
+        .then(function (response) {
+          console.log(response.data.token);
+          localStorage.setItem('token', response.data.token)
+
+          alert('Login Sucessfully');
+          
+        })
+        .catch(function (error) {
+          console.log(error);
+          alert('Invaid Login');
+        });
             actions.resetForm()
             setInitialvalues({
               email: '',
               password: '',
             })
+            history.push("/loginhome");
            
       }}
     >

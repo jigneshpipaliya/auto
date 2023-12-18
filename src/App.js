@@ -13,6 +13,11 @@ import Usersingup from './Compont/Usersingup';
 import Servicelogin from './Compont/Servicelogin';
 import Servicesingup from './Compont/Servicesingup';
 import Service from './Compont/Service';
+import View from './Compont/View';
+import Loginhome from './Compont/Loginhome';
+import Secureuserlogin from './Compont/Secureuserlogin';
+import UserLogout from './Compont/UserLogout';
+import Secureservicelogin from './Secureservicelogin';
 
 function App() {
   return (
@@ -42,9 +47,22 @@ function App() {
          <Servicesingup/>
           </Route>
           <Route path='/service'>
+          <Secureservicelogin>
          <Service/>
+         </Secureservicelogin>
           </Route>
-          
+          <Route path='/view/:id'>
+          <View/>
+          </Route>
+          <Route path='/loginhome'>
+          <Secureuserlogin>
+          <Loginhome/>
+          </Secureuserlogin>
+          </Route>
+          <Route path='/userlogout'>
+          <UserLogout/>
+          </Route>
+         
         </Switch>
       </Router>
     

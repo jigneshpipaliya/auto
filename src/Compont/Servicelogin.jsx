@@ -1,14 +1,17 @@
 import React, { useState } from 'react'
 import { Formik, Field, Form } from 'formik';
-import {Link} from 'react-router-dom/cjs/react-router-dom'
+import {Link,useHistory} from 'react-router-dom/cjs/react-router-dom'
+import axios from 'axios';
 
 function Servicelogin() {
-    const [data, setData] = useState([])
+
+    //const [data, setData] = useState([])
     const [initialValues, setInitialvalues] = useState(
       {
         email: '',
         password: '',
       })   
+      const history = useHistory()
   return (
     <div>
       
@@ -16,12 +19,22 @@ function Servicelogin() {
       initialValues={initialValues}
       enableReinitialize={true}
       onSubmit={async (values, actions) => {
-        setData([...data, values])
+        axios.post('http://localhost:3001/station/login', values)
+        .then(function (response) {
+          console.log(response);
+          localStorage.setItem('token', response.data.token)
+          alert('Login Sucessfully');
+        })
+        .catch(function (error) {
+          console.log(error);
+          alert('Invaid Login');
+        });
             actions.resetForm()
             setInitialvalues({
               email: '',
               password: ''
             })
+            history.push("/servicehome");
       }}
     >
       <Form>
